@@ -1,0 +1,37 @@
+#!/bin/bash
+
+mkdir -p ~/tmp/Keyboardis
+
+xinput list > ~/tmp/Keyboardis/01listfull
+
+sleep 1
+
+grep "Device(8910) Keyboard" ~/tmp/Keyboardis/01listfull > ~/tmp/Keyboardis/02listline
+
+sleep 1
+
+grep -o "Device(8910) Keyboard"[^/].* ~/tmp/Keyboardis/02listline > ~/tmp/Keyboardis/03listid
+
+sleep 1
+
+grep -o "id"[^/].* ~/tmp/Keyboardis/03listid > ~/tmp/Keyboardis/04numberid
+
+sleep 1
+
+grep -Eo '[0-9]{1,}' ~/tmp/Keyboardis/04numberid > ~/tmp/Keyboardis/05finalnumber
+
+sleep 1
+clear
+
+# cat ~/tmp/Keyboardis/05finalnumber
+
+id_note="$(cat ~/tmp/Keyboardis/05finalnumber)"
+echo "O ID $id_note será desativado" | xcowsay 
+
+#Deactivate
+
+xinput float $id_note
+
+rm -rfv ~/tmp/ 
+
+xcowsay "Teclado Notebook Desativado"
